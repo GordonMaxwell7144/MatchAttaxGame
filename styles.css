@@ -255,3 +255,20 @@ footer {
 .qty-controls button { background: var(--gold); color: #3d3100; }
 .delete-card { background: #fff1f1; color: var(--red); }
 @media (max-width: 900px) { .card-form { grid-template-columns: 1fr; } .wide-field { grid-column: auto; } .card-tools { grid-template-columns: 1fr; } }
+
+
+.match-card-style {
+  background: linear-gradient(145deg, #0b2f57 0%, #144d87 48%, #f8fbff 49%, #ffffff 100%);
+  color: white;
+  border: 2px solid #ffd95c;
+}
+.match-card-style h3 { color: white; font-size: 1.25rem; margin-top: .55rem; }
+.attax-topline { display: flex; justify-content: space-between; gap: .75rem; font-weight: 1000; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: #ffe58a; }
+.attax-club { margin: 0 0 .8rem; color: #dcecff; font-weight: 800; }
+.attax-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: .75rem 0; }
+.attax-stats div { background: rgba(255,255,255,.95); color: var(--blue); border-radius: 14px; padding: .55rem .4rem; text-align: center; box-shadow: inset 0 0 0 2px rgba(255, 217, 92, .55); }
+.attax-stats strong { display: block; font-size: 1.35rem; line-height: 1; }
+.attax-stats span { display: block; margin-top: .2rem; font-size: .72rem; font-weight: 1000; }
+.match-card-style .card-pill { background: rgba(255,255,255,.92); color: var(--blue); }
+.match-card-style .card-note { color: #eef6ff; }
+.match-card-style .delete-card { background: white; }

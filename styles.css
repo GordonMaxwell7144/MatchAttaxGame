@@ -272,3 +272,29 @@ footer {
 .match-card-style .card-pill { background: rgba(255,255,255,.92); color: var(--blue); }
 .match-card-style .card-note { color: #eef6ff; }
 .match-card-style .delete-card { background: white; }
+
+
+.battle-panel { margin-top: 1rem; }
+.battle-controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: .9rem; align-items: end; }
+.battle-controls label { display: grid; gap: .35rem; font-weight: 800; color: var(--blue); }
+.battle-controls select { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: .75rem .85rem; background: white; color: var(--ink); font: inherit; appearance: auto; }
+.battle-rules { margin: 1rem 0; padding: .85rem 1rem; border-radius: 14px; background: #fff6cf; color: #594300; font-weight: 800; }
+.battle-result { text-align: left; }
+.battle-scoreboard { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+.battle-team-name { font-size: 1.25rem; font-weight: 1000; color: var(--blue); }
+.battle-team-name.away { text-align: right; }
+.battle-score { background: var(--blue); color: white; border-radius: 18px; padding: .75rem 1.1rem; font-size: 1.5rem; font-weight: 1000; }
+.battle-rounds { display: grid; gap: .75rem; }
+.battle-round { border: 1px solid var(--line); border-radius: 16px; background: white; padding: .8rem; }
+.battle-round-title { display: flex; justify-content: space-between; gap: .5rem; color: var(--muted); font-size: .86rem; font-weight: 900; margin-bottom: .55rem; }
+.battle-matchup { display: grid; grid-template-columns: 1fr auto 1fr; gap: .75rem; align-items: center; }
+.battle-card-side { border-radius: 14px; background: #f8fbff; padding: .7rem; }
+.battle-card-side.won { background: #e8fff2; box-shadow: inset 0 0 0 2px #7bdba4; }
+.battle-card-side.lost { opacity: .7; }
+.battle-card-side.away { text-align: right; }
+.battle-card-player { font-weight: 1000; color: var(--blue); }
+.battle-card-detail { color: var(--muted); font-size: .86rem; font-weight: 800; }
+.battle-total { background: var(--gold); color: #3d3100; border-radius: 999px; padding: .4rem .7rem; font-weight: 1000; white-space: nowrap; }
+.out-position { color: var(--red); font-weight: 900; }
+.battle-warning { background: #fff1f1; color: #7a1f1f; border: 1px solid #f0b4b4; padding: .85rem; border-radius: 14px; font-weight: 800; }
+@media (max-width: 900px) { .battle-controls, .battle-scoreboard, .battle-matchup { grid-template-columns: 1fr; } .battle-team-name.away, .battle-card-side.away { text-align: left; } .battle-score { text-align: center; } }

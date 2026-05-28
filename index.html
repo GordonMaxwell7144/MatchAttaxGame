@@ -69,28 +69,32 @@
       <div class="section-title cards-title">
         <div>
           <h2>Card Binder</h2>
-          <p>Add your cards here and see your full collection in one place.</p>
+          <p>Add your Match Attax cards here and build your collection.</p>
         </div>
         <span id="cardCount" class="status">0 cards</span>
       </div>
 
-      <form id="cardForm" class="card-form">
+      <form id="cardForm" class="card-form match-attax-form">
         <label>
           Player Name
-          <input id="cardPlayer" name="player" type="text" placeholder="Example: Haaland" required />
+          <input id="cardPlayer" name="player" type="text" placeholder="Example: Bellingham" required />
         </label>
         <label>
-          Team
-          <input id="cardTeam" name="team" type="text" placeholder="Example: Man City" />
+          Club / Team
+          <input id="cardTeam" name="team" type="text" placeholder="Example: Real Madrid" required />
         </label>
         <label>
           Card Type
           <select id="cardType" name="type">
-            <option value="Base">Base</option>
-            <option value="Gold">Gold</option>
+            <option value="Base Card">Base Card</option>
+            <option value="Gold Limited Edition">Gold Limited Edition</option>
             <option value="Limited Edition">Limited Edition</option>
             <option value="Man of the Match">Man of the Match</option>
             <option value="100 Club">100 Club</option>
+            <option value="Black Edge">Black Edge</option>
+            <option value="Heritage">Heritage</option>
+            <option value="Chrome Shield">Chrome Shield</option>
+            <option value="Squad Zone">Squad Zone</option>
             <option value="Other">Other</option>
           </select>
         </label>
@@ -98,15 +102,32 @@
           Position
           <select id="cardPosition" name="position">
             <option value="">Choose</option>
-            <option value="Attack">Attack</option>
-            <option value="Midfield">Midfield</option>
+            <option value="Forward">Forward</option>
+            <option value="Midfielder">Midfielder</option>
             <option value="Defender">Defender</option>
             <option value="Goalkeeper">Goalkeeper</option>
+            <option value="Manager">Manager</option>
           </select>
         </label>
         <label>
-          Rating / Value
-          <input id="cardRating" name="rating" type="text" placeholder="Example: 92" />
+          Attack
+          <input id="cardAttack" name="attack" type="number" min="0" max="101" placeholder="Example: 92" />
+        </label>
+        <label>
+          Defense
+          <input id="cardDefense" name="defense" type="number" min="0" max="101" placeholder="Example: 78" />
+        </label>
+        <label>
+          Overall / Rating
+          <input id="cardRating" name="rating" type="number" min="0" max="101" placeholder="Example: 95" />
+        </label>
+        <label>
+          Card Number
+          <input id="cardNumber" name="cardNumber" type="text" placeholder="Example: 214" />
+        </label>
+        <label>
+          Season / Collection
+          <input id="cardSeason" name="season" type="text" placeholder="Example: 2024/25" />
         </label>
         <label>
           Quantity
@@ -114,9 +135,9 @@
         </label>
         <label class="wide-field">
           Notes
-          <input id="cardNotes" name="notes" type="text" placeholder="Anything special about the card" />
+          <input id="cardNotes" name="notes" type="text" placeholder="Example: shiny, trade, favourite, damaged" />
         </label>
-        <button type="submit" class="primary-button">Add Card</button>
+        <button type="submit" class="primary-button">Add Match Attax Card</button>
       </form>
 
       <div class="card-tools">
@@ -135,7 +156,7 @@
     <p>Scores are managed in Google Sheets. This site is designed for GitHub Pages.</p>
   </footer>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
 

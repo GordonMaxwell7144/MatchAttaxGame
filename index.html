@@ -63,13 +63,79 @@
         <div id="scheduleCards" class="schedule-cards"></div>
       </article>
     </section>
+
+
+    <section class="panel cards-panel" id="cards">
+      <div class="section-title cards-title">
+        <div>
+          <h2>Card Binder</h2>
+          <p>Add your cards here and see your full collection in one place.</p>
+        </div>
+        <span id="cardCount" class="status">0 cards</span>
+      </div>
+
+      <form id="cardForm" class="card-form">
+        <label>
+          Player Name
+          <input id="cardPlayer" name="player" type="text" placeholder="Example: Haaland" required />
+        </label>
+        <label>
+          Team
+          <input id="cardTeam" name="team" type="text" placeholder="Example: Man City" />
+        </label>
+        <label>
+          Card Type
+          <select id="cardType" name="type">
+            <option value="Base">Base</option>
+            <option value="Gold">Gold</option>
+            <option value="Limited Edition">Limited Edition</option>
+            <option value="Man of the Match">Man of the Match</option>
+            <option value="100 Club">100 Club</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <label>
+          Position
+          <select id="cardPosition" name="position">
+            <option value="">Choose</option>
+            <option value="Attack">Attack</option>
+            <option value="Midfield">Midfield</option>
+            <option value="Defender">Defender</option>
+            <option value="Goalkeeper">Goalkeeper</option>
+          </select>
+        </label>
+        <label>
+          Rating / Value
+          <input id="cardRating" name="rating" type="text" placeholder="Example: 92" />
+        </label>
+        <label>
+          Quantity
+          <input id="cardQty" name="quantity" type="number" min="1" value="1" />
+        </label>
+        <label class="wide-field">
+          Notes
+          <input id="cardNotes" name="notes" type="text" placeholder="Anything special about the card" />
+        </label>
+        <button type="submit" class="primary-button">Add Card</button>
+      </form>
+
+      <div class="card-tools">
+        <input id="cardSearch" type="search" placeholder="Search cards by player, team, type, or position" />
+        <button id="exportCards" type="button" class="secondary-button">Export List</button>
+        <button id="clearCards" type="button" class="danger-button">Clear Cards</button>
+      </div>
+
+      <div id="cardsEmpty" class="empty-state">No cards added yet. Add your first card above.</div>
+      <div id="cardsGrid" class="cards-grid"></div>
+    </section>
+
   </main>
 
   <footer>
     <p>Scores are managed in Google Sheets. This site is designed for GitHub Pages.</p>
   </footer>
 
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
 

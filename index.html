@@ -65,6 +65,36 @@
     </section>
 
 
+
+
+    <section class="panel battle-panel" id="battle">
+      <div class="section-title cards-title">
+        <div>
+          <h2>Team Battle</h2>
+          <p>Battle two Match Attax teams using your saved cards. Home team gets the lineup advantage.</p>
+        </div>
+        <span class="status">Attack + Defense</span>
+      </div>
+
+      <div class="battle-controls">
+        <label>
+          Home Team
+          <select id="homeBattleTeam"></select>
+        </label>
+        <label>
+          Away Team
+          <select id="awayBattleTeam"></select>
+        </label>
+        <button id="runBattle" type="button" class="primary-button">Start Battle</button>
+      </div>
+
+      <div class="battle-rules">
+        Needs at least 1 GK, 1 DEF, 1 MID, and 1 ATT. Out-of-position cards get -10 Attack and -10 Defense. Each winning card scores 1 goal.
+      </div>
+
+      <div id="battleResult" class="battle-result empty-state">Add cards for at least two teams, then start a battle.</div>
+    </section>
+
     <section class="panel cards-panel" id="cards">
       <div class="section-title cards-title">
         <div>
@@ -156,7 +186,7 @@
     <p>Scores are managed in Google Sheets. This site is designed for GitHub Pages.</p>
   </footer>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>
 

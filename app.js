@@ -265,3 +265,156 @@ exportCardsButton?.addEventListener("click", () => {
 });
 
 renderCards();
+
+
+const homeBattleTeam = document.querySelector("#homeBattleTeam");
+const awayBattleTeam = document.querySelector("#awayBattleTeam");
+const runBattleButton = document.querySelector("#runBattle");
+const battleResult = document.querySelector("#battleResult");
+const positionOrder = ["Goalkeeper", "Defender", "Midfielder", "Forward"];
+
+function normalizePosition(position) {
+  const value = String(position || "").toLowerCase();
+  if (value.includes("goal") || value === "gk") return "Goalkeeper";
+  if (value.includes("def")) return "Defender";
+  if (value.includes("mid")) return "Midfielder";
+  if (value.includes("for") || value.includes("att") || value.includes("striker")) return "Forward";
+  return "";
+}
+
+function cardPower(card, slotPosition) {
+  const attack = Number(card.attack || 0);
+  const defense = Number(card.defense || 0);
+  const actualPosition = normalizePosition(card.position);
+  const outOfPosition = actualPosition !== slotPosition;
+  const penalty = outOfPosition ? 20 : 0;
+  return { total: attack + defense - penalty, outOfPosition, attack, defense, actualPosition };
+}
+
+function teamNamesFromCards() {
+  return [...new Set(cards.map(card => card.team).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+}
+
+function updateBattleTeamOptions() {
+  if (!homeBattleTeam || !awayBattleTeam) return;
+  const names = teamNamesFromCards();
+  const previousHome = homeBattleTeam.value;
+  const previousAway = awayBattleTeam.value;
+  const options = names.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
+  homeBattleTeam.innerHTML = options || `<option value="">Add cards first</option>`;
+  awayBattleTeam.innerHTML = options || `<option value="">Add cards first</option>`;
+  if (names.includes(previousHome)) homeBattleTeam.value = previousHome;
+  if (names.includes(previousAway)) awayBattleTeam.value = previousAway;
+  if (!awayBattleTeam.value && names.length > 1) awayBattleTeam.value = names[1];
+}
+
+function cardsForTeam(team) {
+  return cards.filter(card => card.team === team);
+}
+
+function hasRequiredPositions(teamCards) {
+  return positionOrder.every(position => teamCards.some(card => normalizePosition(card.position) === position));
+}
+
+function nextPositionSlots(homeCards, count) {
+  const remainingByPosition = Object.fromEntries(positionOrder.map(position => [position, homeCards.filter(card => normalizePosition(card.position) === position).length]));
+  const slots = [];
+  for (const position of positionOrder) {
+    if (remainingByPosition[position] > 0 && slots.length < count) {
+      slots.push(position);
+      remainingByPosition[position] -= 1;
+    }
+  }
+  let guard = 0;
+  while (slots.length < count && guard < 500) {
+    for (const position of positionOrder) {
+      if (remainingByPosition[position] > 0 && slots.length < count) {
+        slots.push(position);
+        remainingByPosition[position] -= 1;
+      }
+    }
+    guard += 1;
+    if (!Object.values(remainingByPosition).some(Boolean)) break;
+  }
+  return slots;
+}
+
+function pickCardForSlot(pool, slotPosition, preferPosition = true) {
+  let candidates = preferPosition ? pool.filter(card => normalizePosition(card.position) === slotPosition) : [];
+  if (!candidates.length) candidates = pool;
+  candidates.sort((a, b) => cardPower(b, slotPosition).total - cardPower(a, slotPosition).total);
+  const chosen = candidates[0];
+  pool.splice(pool.indexOf(chosen), 1);
+  return chosen;
+}
+
+function buildBattleLineups(homeCards, awayCards) {
+  const battleCount = Math.min(homeCards.length, awayCards.length);
+  const slots = nextPositionSlots(homeCards, battleCount);
+  const homePool = [...homeCards];
+  const awayPool = [...awayCards];
+  return slots.map(slot => ({
+    slot,
+    homeCard: pickCardForSlot(homePool, slot, true),
+    awayCard: pickCardForSlot(awayPool, slot, true)
+  }));
+}
+
+function runTeamBattle() {
+  if (!battleResult) return;
+  const homeTeam = homeBattleTeam.value;
+  const awayTeam = awayBattleTeam.value;
+  if (!homeTeam || !awayTeam || homeTeam === awayTeam) {
+    battleResult.innerHTML = `<div class="battle-warning">Choose two different teams.</div>`;
+    return;
+  }
+  const homeCards = cardsForTeam(homeTeam);
+  const awayCards = cardsForTeam(awayTeam);
+  if (homeCards.length < 4 || awayCards.length < 4) {
+    battleResult.innerHTML = `<div class="battle-warning">Both teams need at least 4 cards: 1 GK, 1 DEF, 1 MID, and 1 ATT.</div>`;
+    return;
+  }
+  if (!hasRequiredPositions(homeCards) || !hasRequiredPositions(awayCards)) {
+    battleResult.innerHTML = `<div class="battle-warning">Both teams must have at least 1 Goalkeeper, 1 Defender, 1 Midfielder, and 1 Forward/Attack card.</div>`;
+    return;
+  }
+  const rounds = buildBattleLineups(homeCards, awayCards);
+  let homeGoals = 0;
+  let awayGoals = 0;
+  const roundHtml = rounds.map((round, index) => {
+    const homePower = cardPower(round.homeCard, round.slot);
+    const awayPower = cardPower(round.awayCard, round.slot);
+    const homeWon = homePower.total > awayPower.total;
+    const awayWon = awayPower.total > homePower.total;
+    if (homeWon) homeGoals += 1;
+    if (awayWon) awayGoals += 1;
+    return `
+      <div class="battle-round">
+        <div class="battle-round-title"><span>Round ${index + 1}</span><span>Position slot: ${round.slot}</span></div>
+        <div class="battle-matchup">
+          <div class="battle-card-side ${homeWon ? "won" : awayWon ? "lost" : ""}">
+            <div class="battle-card-player">${escapeHtml(round.homeCard.player)}</div>
+            <div class="battle-card-detail">${escapeHtml(round.homeCard.position || "No position")} ? ATT ${escapeHtml(round.homeCard.attack || 0)} + DEF ${escapeHtml(round.homeCard.defense || 0)}</div>
+            ${homePower.outOfPosition ? `<div class="out-position">Out of position: -20</div>` : ""}
+          </div>
+          <div class="battle-total">${homePower.total} - ${awayPower.total}</div>
+          <div class="battle-card-side away ${awayWon ? "won" : homeWon ? "lost" : ""}">
+            <div class="battle-card-player">${escapeHtml(round.awayCard.player)}</div>
+            <div class="battle-card-detail">${escapeHtml(round.awayCard.position || "No position")} ? ATT ${escapeHtml(round.awayCard.attack || 0)} + DEF ${escapeHtml(round.awayCard.defense || 0)}</div>
+            ${awayPower.outOfPosition ? `<div class="out-position">Out of position: -20</div>` : ""}
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+
+  battleResult.innerHTML = `
+    <div class="battle-scoreboard">
+      <div class="battle-team-name">${escapeHtml(homeTeam)}</div>
+      <div class="battle-score">${homeGoals} - ${awayGoals}</div>
+      <div class="battle-team-name away">${escapeHtml(awayTeam)}</div>
+    </div>
+    <div class="battle-rounds">${roundHtml}</div>`;
+}
+
+runBattleButton?.addEventListener("click", runTeamBattle);
+updateBattleTeamOptions();

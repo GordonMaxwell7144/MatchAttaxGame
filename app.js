@@ -312,7 +312,12 @@ function updateBattleTeamOptions() {
 }
 
 function cardsForTeam(team) {
-  return cards.filter(card => card.team === team);
+  return cards
+    .filter(card => card.team === team)
+    .flatMap(card => {
+      const quantity = Math.max(1, Number(card.quantity || 1));
+      return Array.from({ length: quantity }, (_, index) => ({ ...card, battleCopy: index + 1 }));
+    });
 }
 
 function hasRequiredPositions(teamCards) {

@@ -226,6 +226,7 @@ cardForm?.addEventListener("submit", event => {
   cardForm.reset();
   document.querySelector("#cardQty").value = 1;
   renderCards();
+  updateBattleTeamOptions();
 });
 
 cardsGrid?.addEventListener("click", event => {
@@ -240,6 +241,7 @@ cardsGrid?.addEventListener("click", event => {
   if (action === "delete") cards = cards.filter(item => item.id !== card.id);
   saveCards();
   renderCards();
+  updateBattleTeamOptions();
 });
 
 cardSearch?.addEventListener("input", renderCards);
@@ -249,6 +251,7 @@ clearCardsButton?.addEventListener("click", () => {
   cards = [];
   saveCards();
   renderCards();
+  updateBattleTeamOptions();
 });
 
 exportCardsButton?.addEventListener("click", () => {

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Soccer Match Attack League</title>
+  <link rel="preconnect" href="https://docs.google.com" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Soccer Match Attack</p>
+      <h1>League Standings & Schedule</h1>
+      <p class="hero-copy">A clean website version of the league spreadsheet. Scores stay in the Google Sheet, and this page can show the latest standings and weekly games.</p>
+    </div>
+    <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/1Z5zu14YfbphJVqI-b0U3dmANpQICkiWQv6-zCdlrrhU/edit" target="_blank" rel="noreferrer">Open Spreadsheet</a>
+  </header>
+
+  <main>
+    <section class="panel intro-panel">
+      <div>
+        <h2>Quick View</h2>
+        <p>Pick a week to see that week’s games. Winning teams appear bold once scores are entered.</p>
+      </div>
+      <div class="controls">
+        <label for="weekSelect">Week</label>
+        <select id="weekSelect"></select>
+      </div>
+    </section>
+
+    <section class="grid two-column">
+      <article class="panel">
+        <div class="section-title">
+          <h2>Standings</h2>
+          <span id="standingsStatus" class="status">Loading…</span>
+        </div>
+        <div class="table-wrap">
+          <table id="standingsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Club</th>
+                <th>Played</th>
+                <th>Won</th>
+                <th>Drawn</th>
+                <th>Lost</th>
+                <th>GD</th>
+                <th>Pts</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-title">
+          <h2 id="weekTitle">Week Schedule</h2>
+          <span id="scheduleStatus" class="status">Loading…</span>
+        </div>
+        <p id="byeText" class="bye-text"></p>
+        <div id="scheduleCards" class="schedule-cards"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>Scores are managed in Google Sheets. This site is designed for GitHub Pages.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

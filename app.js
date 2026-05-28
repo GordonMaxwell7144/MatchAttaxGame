@@ -50,7 +50,7 @@ function cleanTeam(value) {
 async function loadStandings() {
   try {
     const rows = await fetchSheet(STANDINGS_GID, "A1:H32");
-    const data = rows.slice(1).filter(row => row[1]);
+    const data = rows.filter(row => row[1]);
     standingsBody.innerHTML = data.map(row => `
       <tr>
         <td>${row[0] || ""}</td>
@@ -73,7 +73,7 @@ async function loadStandings() {
 async function loadSchedule() {
   try {
     const rows = await fetchSheet(SCHEDULE_GID, "A3:E468");
-    scheduleRows = rows.slice(1)
+    scheduleRows = rows
       .filter(row => row[0] && row[1] && row[2])
       .map(row => ({
         week: Number(row[0]),
@@ -119,3 +119,6 @@ function renderSchedule(week) {
 
 loadStandings();
 loadSchedule();
+
+
+

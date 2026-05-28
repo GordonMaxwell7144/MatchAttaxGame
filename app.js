@@ -143,7 +143,18 @@ function loadCards() {
 function saveCards() { localStorage.setItem(CARD_STORAGE_KEY, JSON.stringify(cards)); }
 
 function cardMatchesSearch(card, query) {
-  const haystack = [card.player, card.team, card.type, card.position, card.rating, card.notes].join(" ").toLowerCase();
+  const haystack = [
+    card.player,
+    card.team,
+    card.type,
+    card.position,
+    card.attack,
+    card.defense,
+    card.rating,
+    card.cardNumber,
+    card.season,
+    card.notes
+  ].join(" ").toLowerCase();
   return haystack.includes(query.toLowerCase());
 }
 
@@ -159,13 +170,21 @@ function renderCards() {
   cardCount.textContent = `${cards.length} card${cards.length === 1 ? "" : "s"} ? ${totalQuantity} total`;
   cardsEmpty.style.display = shownCards.length ? "none" : "block";
   cardsGrid.innerHTML = shownCards.map(card => `
-    <article class="collection-card" data-card-id="${card.id}">
+    <article class="collection-card match-card-style" data-card-id="${card.id}">
+      <div class="attax-topline">
+        <span>${escapeHtml(card.type || "Match Attax")}</span>
+        ${card.cardNumber ? `<span>#${escapeHtml(card.cardNumber)}</span>` : ""}
+      </div>
       <h3>${escapeHtml(card.player)}</h3>
+      <p class="attax-club">${escapeHtml(card.team || "No club set")}</p>
+      <div class="attax-stats">
+        <div><strong>${escapeHtml(card.attack || "?")}</strong><span>ATT</span></div>
+        <div><strong>${escapeHtml(card.defense || "?")}</strong><span>DEF</span></div>
+        <div><strong>${escapeHtml(card.rating || "?")}</strong><span>OVR</span></div>
+      </div>
       <div class="card-meta">
-        ${card.team ? `<span class="card-pill">${escapeHtml(card.team)}</span>` : ""}
-        ${card.type ? `<span class="card-pill">${escapeHtml(card.type)}</span>` : ""}
         ${card.position ? `<span class="card-pill">${escapeHtml(card.position)}</span>` : ""}
-        ${card.rating ? `<span class="card-pill">Rating ${escapeHtml(card.rating)}</span>` : ""}
+        ${card.season ? `<span class="card-pill">${escapeHtml(card.season)}</span>` : ""}
       </div>
       ${card.notes ? `<p class="card-note">${escapeHtml(card.notes)}</p>` : ""}
       <div class="card-actions">
@@ -185,9 +204,13 @@ function getCardFromForm() {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
     player: String(formData.get("player") || "").trim(),
     team: String(formData.get("team") || "").trim(),
-    type: String(formData.get("type") || "Base").trim(),
+    type: String(formData.get("type") || "Base Card").trim(),
     position: String(formData.get("position") || "").trim(),
+    attack: String(formData.get("attack") || "").trim(),
+    defense: String(formData.get("defense") || "").trim(),
     rating: String(formData.get("rating") || "").trim(),
+    cardNumber: String(formData.get("cardNumber") || "").trim(),
+    season: String(formData.get("season") || "").trim(),
     quantity: Math.max(1, Number(formData.get("quantity") || 1)),
     notes: String(formData.get("notes") || "").trim(),
     createdAt: new Date().toISOString()
@@ -229,8 +252,8 @@ clearCardsButton?.addEventListener("click", () => {
 });
 
 exportCardsButton?.addEventListener("click", () => {
-  const headers = ["Player", "Team", "Type", "Position", "Rating", "Quantity", "Notes"];
-  const rows = cards.map(card => [card.player, card.team, card.type, card.position, card.rating, card.quantity, card.notes]);
+  const headers = ["Player", "Team", "Type", "Position", "Attack", "Defense", "Overall", "Card Number", "Season", "Quantity", "Notes"];
+  const rows = cards.map(card => [card.player, card.team, card.type, card.position, card.attack, card.defense, card.rating, card.cardNumber, card.season, card.quantity, card.notes]);
   const csv = [headers, ...rows].map(row => row.map(value => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);

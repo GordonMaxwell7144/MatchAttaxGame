@@ -1915,7 +1915,7 @@ function renderCards() {
   const query = cardSearch?.value || "";
   const shownCards = cards.filter(card => cardMatchesSearch(card, query));
   const totalQuantity = cards.reduce((sum, card) => sum + Number(card.quantity || 0), 0);
-  cardCount.textContent = `${cards.length} card${cards.length === 1 ? "" : "s"} ? ${totalQuantity} total`;
+  cardCount.textContent = `${cards.length} card${cards.length === 1 ? "" : "s"} - ${totalQuantity} total`;
   cardsEmpty.style.display = shownCards.length ? "none" : "block";
   cardsGrid.innerHTML = shownCards.map(card => `
     <article class="collection-card match-card-style" data-card-id="${card.id}">
@@ -1937,7 +1937,7 @@ function renderCards() {
       ${card.notes ? `<p class="card-note">${escapeHtml(card.notes)}</p>` : ""}
       <div class="card-actions">
         <div class="qty-controls">
-          <button type="button" data-action="minus" aria-label="Remove one ${escapeHtml(card.player)} card">?</button>
+          <button type="button" data-action="minus" aria-label="Remove one ${escapeHtml(card.player)} card">-</button>
           <span>Qty ${card.quantity}</span>
           <button type="button" data-action="plus" aria-label="Add one ${escapeHtml(card.player)} card">+</button>
         </div>
@@ -2150,13 +2150,13 @@ function runTeamBattle() {
         <div class="battle-matchup">
           <div class="battle-card-side ${homeWon ? "won" : awayWon ? "lost" : ""}">
             <div class="battle-card-player">${escapeHtml(round.homeCard.player)}</div>
-            <div class="battle-card-detail">${escapeHtml(round.homeCard.position || "No position")} ? ATT ${escapeHtml(round.homeCard.attack || 0)} + DEF ${escapeHtml(round.homeCard.defense || 0)}</div>
+            <div class="battle-card-detail">${escapeHtml(round.homeCard.position || "No position")} - ATT ${escapeHtml(round.homeCard.attack || 0)} + DEF ${escapeHtml(round.homeCard.defense || 0)}</div>
             ${homePower.outOfPosition ? `<div class="out-position">Out of position: -20</div>` : ""}
           </div>
           <div class="battle-total">${homePower.total} - ${awayPower.total}</div>
           <div class="battle-card-side away ${awayWon ? "won" : homeWon ? "lost" : ""}">
             <div class="battle-card-player">${escapeHtml(round.awayCard.player)}</div>
-            <div class="battle-card-detail">${escapeHtml(round.awayCard.position || "No position")} ? ATT ${escapeHtml(round.awayCard.attack || 0)} + DEF ${escapeHtml(round.awayCard.defense || 0)}</div>
+            <div class="battle-card-detail">${escapeHtml(round.awayCard.position || "No position")} - ATT ${escapeHtml(round.awayCard.attack || 0)} + DEF ${escapeHtml(round.awayCard.defense || 0)}</div>
             ${awayPower.outOfPosition ? `<div class="out-position">Out of position: -20</div>` : ""}
           </div>
         </div>
@@ -2174,3 +2174,4 @@ function runTeamBattle() {
 
 runBattleButton?.addEventListener("click", runTeamBattle);
 updateBattleTeamOptions();
+
